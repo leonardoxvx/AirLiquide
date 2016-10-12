@@ -1,0 +1,433 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Sitio.master.cs" Inherits="Cobros30.Sitio" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title><asp:Literal ID="ltrTitle" runat="server"></asp:Literal></title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport"/>
+    
+    <!-- Bootstrap 3.3.5 -->
+
+    <link href="assets/template/AdminLTE-2.3.0/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"/>
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"/>
+    <!-- Theme style -->
+    <link href="assets/template/AdminLTE-2.3.0/dist/css/AdminLTE.css" rel="stylesheet" />
+  
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="assets/template/AdminLTE-2.3.0/dist/css/skins/_all-skins.min.css"/>
+
+    <link rel="stylesheet" href="assets/template/AdminLTE-2.3.0/plugins/datatables/dataTables.bootstrap.css"/>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+      <asp:ContentPlaceHolder ID="head" runat="server">
+
+      </asp:ContentPlaceHolder>
+  </head>
+
+      <!--
+  BODY TAG OPTIONS:
+  =================
+  Apply one or more of the following classes to get the
+  desired effect
+  |---------------------------------------------------------|
+  | SKINS         | skin-blue                               |
+  |               | skin-black                              |
+  |               | skin-purple                             |
+  |               | skin-yellow                             |
+  |               | skin-red                                |
+  |               | skin-green                              |
+  |---------------------------------------------------------|
+  |LAYOUT OPTIONS | fixed                                   |
+  |               | layout-boxed                            |
+  |               | layout-top-nav                          |
+  |               | sidebar-collapse                        |
+  |               | sidebar-mini                            |
+  |---------------------------------------------------------|
+  -->
+
+  <body class="hold-transition skin-blue sidebar-mini" id="body" runat="server">
+      <form id="form" runat="server">
+          <asp:ScriptManager ID="ScriptManager1"  runat="server"></asp:ScriptManager>
+
+          <!-- Site wrapper -->
+          <div class="wrapper">
+
+              <!-- Main Header -->
+      <header class="main-header">
+
+        <!-- Logo -->
+        <a href="Default.aspx" class="logo">
+          <!-- mini logo for sidebar mini 50x50 pixels -->
+            
+          <%--<span class="logo-mini"><b>CRM</b></span>--%>
+          <span class="logo-mini"><img src="assets/img/logoSmart.png" width="50" height="50" /></span>
+          <!-- logo for regular state and mobile devices -->
+          <span class="logo-lg"><img src="assets/img/logoSmart.png"  height="50"/></span>
+        </a>
+
+        <!-- Header Navbar -->
+        <nav class="navbar navbar-static-top" role="navigation">
+          <!-- Sidebar toggle button-->
+          <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">Toggle navigation</span>
+          </a>
+          <!-- Navbar Right Menu -->
+          <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+              <!-- Messages: style can be found in dropdown.less-->
+              <li class="dropdown messages-menu">
+                <!-- Menu toggle button -->
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <i class="fa fa-envelope-o"></i>
+                  <span class="label label-success"><asp:Label ID="lblCantidadMensajesNoLeidos2" runat="server"></asp:Label></span>
+                </a>
+                <ul class="dropdown-menu">
+                  <li class="header">
+                      Tienes <asp:Label ID="lblCantidadMensajesNoLeidos" runat="server"></asp:Label> mensajes no leidos</li>
+                  <li>
+                    <!-- inner menu: contains the messages -->
+                    <ul class="menu">
+                      <asp:ListView ID="lvMensajes" runat="server" OnItemDataBound="lvMensajes_ItemDataBound">
+                        <GroupTemplate>
+                            <a>
+                                <asp:PlaceHolder runat="server" ID="itemPlaceholder" />
+                            </a>
+                        </GroupTemplate>
+                        <LayoutTemplate>
+                            <li>
+                                <asp:PlaceHolder ID="groupPlaceholder" runat="server" />
+                            </li>
+                        </LayoutTemplate>
+                        <ItemTemplate>
+                            <div class="pull-left">
+                            <!-- User Image -->
+                                <img runat="server" id="imgFotoUserMsj" src='<%# Bind("Foto") %>' class="img-circle" alt="User Image" />
+                            </div>
+                            <!-- Message title and timestamp -->
+                            <h4>
+                                De 
+                                <asp:Label ID="lblUsuarioDe" runat="server" Visible="true" Text='<%# Bind("Nombre") %>'></asp:Label>
+                                <small><i class="fa fa-clock-o"></i> <asp:Label ID="lblFechaIngreso" runat="server" Text='<%# Bind("FechaIngreso") %>'></asp:Label></small>
+                            </h4>
+
+                            <!-- The message -->
+                            <p>
+                                <asp:Label ID="lblAsunto" runat="server" Text='<%# Bind("Asunto") %>'></asp:Label>
+                                <asp:Label ID="lblIdMensaje" Visible="false" runat="server" Text='<%# Bind("IdMensaje") %>'></asp:Label>
+                            </p>
+
+                            <p>
+                                <asp:LinkButton ID="lbtnVerMensaje" OnClick="lbtnVerMensaje_Click" runat="server" CssClass="btn btn-xs btn-primary"><span class="glyphicon glyphicon-eye-open"></span></asp:LinkButton>
+                            </p>
+                            
+                        </ItemTemplate>
+                      </asp:ListView>
+                      <%--<li><!-- start message -->
+                        <a href="#">
+                          <div class="pull-left">
+                            <!-- User Image -->
+                            <img runat="server" id="imgFotoUserMsj" src="/" class="img-circle" alt="User Image"/>
+                          </div>
+                          <!-- Message title and timestamp -->
+                          <h4>
+                            De Interweb
+                            <small><i class="fa fa-clock-o"></i> 5 minutos</small>
+                          </h4>
+                          <!-- The message -->
+                          <p>Asunto</p>
+                        </a>
+                      </li><!-- end message -->--%> 
+                    </ul><!-- /.menu -->
+                  </li>
+                  <li>
+                      <asp:LinkButton ID="btnNewEmail" OnClick="btnNewEmail_Click" runat="server" CssClass="btn btn-xs btn-default"><span class="glyphicon glyphicon-pencil"></span>Nuevo mensaje</asp:LinkButton>
+                      
+                  </li>
+                  <li>
+                      <asp:LinkButton ID="lbtnVerTodosLosMensajes" runat="server" OnClick="lbtnVerTodosLosMensajes_Click" CssClass="btn btn-xs btn-default"><span class="glyphicon glyphicon-eye-open"></span>Ver todos los mensajes</asp:LinkButton>
+                  </li>
+                  <!--<li class="footer">
+                      <a href="#">Ver todos los mensajes</a>
+                  </li>-->
+                </ul>
+              </li><!-- /.messages-menu -->
+
+              <!-- Notifications Menu -->
+              <li id="divNotificaciones" runat="server" visible="false" class="dropdown notifications-menu">
+                <!-- Menu toggle button -->
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <i class="fa fa-bell-o"></i>
+                  <span class="label label-warning">10</span>
+                </a>
+                <ul class="dropdown-menu">
+                  <li class="header">Tienes 10 notificaciones</li>
+                  <li>
+                    <!-- Inner Menu: contains the notifications -->
+                    <ul class="menu">
+                      <li><!-- start notification -->
+                        <a href="#">
+                          <i class="fa fa-users text-aqua"></i> 5 nuevos usuarios hoy
+                        </a>
+                      </li><!-- end notification -->
+                    </ul>
+                  </li>
+                  <li class="footer"><a href="#">ver todos</a></li>
+                </ul>
+              </li>
+              <!-- Tasks Menu -->
+              <li id="divTareas" runat="server" visible="false" class="dropdown tasks-menu">
+                <!-- Menu Toggle Button -->
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <i class="fa fa-flag-o"></i>
+                  <span class="label label-danger">9</span>
+                </a>
+                <ul class="dropdown-menu">
+                  <li class="header">Tienes 9 tareas</li>
+                  <li>
+                    <!-- Inner menu: contains the tasks -->
+                    <ul class="menu">
+                      <li><!-- Task item -->
+                        <a href="#">
+                          <!-- Task title and progress text -->
+                          <h3>
+                            Design some buttons
+                            <small class="pull-right">20%</small>
+                          </h3>
+                          <!-- The progress bar -->
+                          <div class="progress xs">
+                            <!-- Change the css width attribute to simulate progress -->
+                            <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                              <span class="sr-only">20% Complete</span>
+                            </div>
+                          </div>
+                        </a>
+                      </li><!-- end task item -->
+                    </ul>
+                  </li>
+                  <li class="footer">
+                    <a href="#">View all tasks</a>
+                  </li>
+                </ul>
+              </li>
+              <!-- User Account Menu -->
+              <li class="dropdown user user-menu">
+                <!-- Menu Toggle Button -->
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <!-- The user image in the navbar-->
+                  <img src="<%= Session["variableImagenUsuario"]%>" class="user-image" alt="User Image"/>
+                  <!-- hidden-xs hides the username on small devices so only the image appears. -->
+                  <span class="hidden-xs"><%= Session["variableNomUsuario"]%></span>
+                </a>
+                <ul class="dropdown-menu">
+                  <!-- The user image in the menu -->
+                  <li class="user-header">
+                    <img src="<%= Session["variableImagenUsuario"]%>" class="img-circle" alt="Usuario Imagen"/>
+                    <p>
+                      <%= Session["variableNomUsuario"]%>
+                      <small>
+                          <asp:Label ID="lblFechaUsuarioDesde" runat="server"></asp:Label>
+                      </small>
+                    </p>
+                  </li>
+                  <!-- Menu Body -->
+                  <%--<li class="user-body">
+                    <div class="col-xs-4 text-center">
+                      <a href="#">Followers</a>
+                    </div>
+                    <div class="col-xs-4 text-center">
+                      <a href="#">Sales</a>
+                    </div>
+                    <div class="col-xs-4 text-center">
+                      <a href="#">Friends</a>
+                    </div>
+                  </li>--%>
+                  <!-- Menu Footer-->
+                  <li class="user-footer">
+                    <div class="pull-left">
+                        <asp:LinkButton Text="Cambio Contraseña" ID="lbtnCambioContrasena" runat="server" OnClick="lbtnCambioContrasena_Click" CssClass="btn btn-primary btn-flat"/>
+                    </div>
+                    <div class="pull-right">
+                      <asp:LinkButton Text="Cerrar Sesión" ID="btnCerrerSesion" runat="server" OnClick="btnCerrarSesion_Click" CssClass="btn btn-danger btn-flat"/>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+              <!-- Control Sidebar Toggle Button 
+              <li>
+                <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+              </li>-->
+            </ul>
+          </div>
+        </nav>
+      </header>
+              <!-- =============================================== -->
+
+              <!-- Left side column. contains the sidebar -->
+              <aside class="main-sidebar">
+                  <!-- sidebar: style can be found in sidebar.less -->
+                  <section class="sidebar">
+                      <!-- Sidebar user panel -->
+                      <div class="user-panel text-center">
+                         <img src="<%= Session["variableImagenMandante"]%>" class="img-responsive img-rounded img-thumbnail" alt=""/>
+                         <br /><br />
+                         <asp:DropDownList ID="ddlMandante" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlMandante_SelectedIndexChanged" CssClass="form-control input-sm btn-primary"></asp:DropDownList>
+                          
+                    <%--<div class="pull-left image">
+                              </div>
+                          <div class="pull-left info">
+                              <a href="#"><i class="fa fa-circle text-success"></i>En linea</a>
+                          </div>
+                          <div class="pull"></div>--%>
+                      </div>
+
+                      <!-- sidebar menu: : style can be found in sidebar.less -->
+                      <ul class="sidebar-menu">
+                          <li class="header">:: Menu Principal ::</li>
+                          <li class="treeview" id="liGestion" runat="server">
+                              <a href="#">
+                                  <i class="fa fa-edit"></i><span>Gestión</span>
+                                  <i class="fa fa-angle-left pull-right"></i>
+                              </a>
+                              <ul class="treeview-menu">
+                                  <li id="liPrincipal" runat="server"><a href="Principal.aspx"><i class="fa fa-circle-o"></i>Principal</a></li>
+                                  <li id="liBuscarDeudor" runat="server"><a href="BuscadorDeudor.aspx"><i class="fa fa-circle-o"></i>Buscar Deudor</a></li>
+                                  <li id="liCarteraAsignada" runat="server"><a href="CarteraAsignada.aspx"><i class="fa fa-circle-o"></i>Cartera Asignada</a></li>
+                              </ul>
+                          </li>
+                          <li class="treeview" id="liReportes" runat="server">
+                              <a href="#">
+                                  <i class="glyphicon glyphicon-signal"></i><span>Reportes</span>
+                                  <i class="fa fa-angle-left pull-right"></i>
+                              </a>
+                              <ul class="treeview-menu">
+                                  <li id="liReporteTipificacion" runat="server"><a href="ReporteTipificacion.aspx"><i class="fa fa-circle-o"></i>Tipificación</a></li>
+                                  <li id="liEstatusMandante" runat="server"><a href="GeneralMandantes.aspx"><i class="fa fa-circle-o"></i>Estatus General</a></li>
+                                  <li id="liInformeExporte" runat="server"><a href="Exportes.aspx"><i class="fa fa-circle-o"></i>Exportes</a></li>
+                                  <li id="liInformeGestionesDiarias" runat="server"><a href="InformeGestionesDiarias.aspx"><i class="fa fa-circle-o"></i>Gestiones Diarias</a></li>
+                                  <li id="liInformeAgendamientoCompromisos" runat="server"><a href="AgendamientosCompromisos.aspx"><i class="fa fa-circle-o"></i>Agendamientos y Compromisos</a></li>
+                                  <li id="liRecuperacionYPagos" runat="server"><a href="RecuperacionPagos.aspx"><i class="fa fa-circle-o"></i>Informe de Pagos</a></li>
+                                  <li id="liAging" runat="server"><a href="Aging.aspx"><i class="fa fa-circle-o"></i>Aging</a></li>
+                                  <li id="liReporteMeta" runat="server"><a href="ReporteMetas.aspx"><i class="fa fa-circle-o"></i>Metas</a></li>
+                              </ul>
+                          </li>
+                          <li class="treeview" id="li1" runat="server">
+                              <a href="#">
+                                  <i class="fa fa-edit"></i><span>Ingresos / Procesos</span>
+                                  <i class="fa fa-angle-left pull-right"></i>
+                              </a>
+                              <ul class="treeview-menu">
+                                  <li id="liIngresoDeudorDeuda" runat="server"><a href="DeudorIn.aspx"><i class="fa fa-circle-o"></i>Ingreso Deudor / Deuda</a></li>
+                                  <li id="liAsignacionAsistida" runat="server"><a href="AsignacionAsistida.aspx"><i class="fa fa-circle-o"></i>Asignación Asistida</a></li>
+                                  <li id="liAsignacionAutomatica" runat="server"><a href="AsignacionManual.aspx"><i class="fa fa-circle-o"></i>Asignación Automatica</a></li>
+                                  <li id="liCargasGenerales" runat="server"><a href="CargasGenerales.aspx"><i class="fa fa-circle-o"></i>Cargas Generales</a></li>
+                              </ul>
+                          </li>
+                          <li class="treeview" id="liAdministracion" runat="server">
+                              <a href="#">
+                                  <i class="fa fa-edit"></i><span>Administración</span>
+                                  <i class="fa fa-angle-left pull-right"></i>
+                              </a>
+                              <ul class="treeview-menu">
+                                  <li id="liUsuarios" runat="server"><a href="Usuarios.aspx"><i class="fa fa-circle-o"></i>Usuarios</a></li>
+                                  <li id="liParametros" runat="server"><a href="Mandantes.aspx"><i class="fa fa-circle-o"></i>Mandantes</a></li>
+                                  <li id="liAsignaciones" runat="server"><a href="Asignaciones.aspx"><i class="fa fa-circle-o"></i>Asignaciones</a></li>
+                                  <li id="liTipoDocumento" runat="server"><a href="TipoDocumentos.aspx"><i class="fa fa-circle-o"></i>Tipo Documento</a></li>
+                                  <li id="liConfiguracion" runat="server"><a href="Configuracion.aspx"><i class="fa fa-circle-o"></i>Configuración Tipificación</a></li>
+                                  <li id="liSucursal" runat="server"><a href="Sucursales.aspx"><i class="fa fa-circle-o"></i>Sucursal</a></li>
+                                  <li id="liPortador" runat="server"><a href="Portador.aspx"><i class="fa fa-circle-o"></i>Portador</a></li>
+                                  <li id="liMeta" runat="server"><a href="Meta.aspx"><i class="fa fa-circle-o"></i>Meta</a></li>
+                              </ul>
+                          </li>
+                          <li runat="server" visible="false" id="liAyuda"><a href="Ayuda.aspx"><i class="fa fa-book"></i><span>Ayuda</span></a></li>
+                      </ul>
+                  </section>
+                  <!-- /.sidebar -->
+              </aside>
+
+              <!-- =============================================== -->
+              <div class="content-wrapper">
+                  <!-- content-wrapper -->
+
+                  <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                  </asp:ContentPlaceHolder>
+              </div>
+              <!--/. content-wrapper -->
+
+              <footer class="main-footer">
+                  <div class="pull-right hidden-xs">
+                      <b>Version</b> 0.0.1
+       
+                  </div>
+                  <%--<strong>Copyright &copy; <a href="#">Interweb</a>.</strong> todos los derechos reservados.--%>
+     
+              </footer>
+
+              <!-- Control Sidebar -->
+              
+              <!-- /.control-sidebar -->
+              <!-- Add the sidebar's background. This div must be placed
+           immediately after the control sidebar -->
+              <div class="control-sidebar-bg"></div>
+          </div>
+          <!-- ./wrapper -->
+
+
+      </form>
+   
+ <!-- jQuery 2.1.4 -->
+    <script src="assets/template/AdminLTE-2.3.0/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+    <!-- Bootstrap 3.3.5 -->
+    <script src="assets/template/AdminLTE-2.3.0/bootstrap/js/bootstrap.min.js"></script>
+    <!-- SlimScroll -->
+    <script src="assets/template/AdminLTE-2.3.0/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+    <!-- FastClick -->
+    <script src="assets/template/AdminLTE-2.3.0/plugins/fastclick/fastclick.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="assets/template/AdminLTE-2.3.0/dist/js/app.min.js"></script>
+    <!--include jQuery Validation Plugin-->  
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js" type="text/javascript"></script>  
+
+    <script type="text/javascript">
+<!--
+        $(document).ready(function () {
+            cargarMaster();
+        });
+
+        var prm = Sys.WebForms.PageRequestManager.getInstance();
+
+        prm.add_endRequest(function () {
+            cargarMaster();
+        });
+
+        function cargarMaster() {
+            //agregar jquery de las funciones...
+            window.setTimeout(function () {
+                $(".alert").fadeTo(2500, 0).slideUp(1500, function () {
+                    $(this).remove(); 
+                });
+            }, 4000);
+        }
+
+    //-->
+      </script>
+        
+        <asp:ContentPlaceHolder ID="footer" runat="server">
+
+        </asp:ContentPlaceHolder>
+  
+  </body>
+
+</html>
